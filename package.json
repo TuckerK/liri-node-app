@@ -1,0 +1,23 @@
+{
+  "name": "liri-node-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TuckerK/liri-node-app.git"
+  },
+  "author": "Tucker King",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/TuckerK/liri-node-app/issues"
+  },
+  "homepage": "https://github.com/TuckerK/liri-node-app#readme",
+  "dependencies": {
+    "inquirer": "^5.0.1",
+    "twitter": "^1.7.1"
+  }
+}
