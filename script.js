@@ -1,18 +1,11 @@
-// var keys = require("./keys.js");
+var keys = require("./keys.js");
 var inquire = require("inquirer");
 var Spotify = require("node-spotify-api");
 var request = require("request");
 var Twitter = require("twitter");
 var fs = require("fs");
 
-var client = new Twitter({
-  consumer_key: "m2XqNPN3NsAszUwFnvAyyefsz",
-  consumer_secret: "YAJbsJrqH2dKsVKIUiUCGbm2FGum52GDKtavQFMl8p3SvHSRcX",
-  access_token_key: "	54753758-YNpZnmWomWqWXbKYq60Eq7RaeRzHGpsvMmpIgUgT3",
-  access_token_secret: "MnK54q4OumiuJGjTljUsz1nqZdsbFRxL8z4hCwXQCWefp"
-});
-
-console.log(client);
+var client = new Twitter(keys);
 
 var spotify = new Spotify({
   id: "1e9bcea7fad041968677a36aae598bda",
@@ -45,24 +38,23 @@ inquire
       movieSearch();
     } else if (usr.app === "Do What It Says") {
       console.log("Do what it says");
+      doWhatItSays();
     } else {
       console.log("something went wrong");
     }
   });
 
 function getTweets() {
-  var params = { screen_name: "tuckerwking" };
-  client.get("statuses/user_timeline", params, function(
-    error,
-    tweets,
-    response
-  ) {
-    if (!error) {
-      console.log(tweets);
-    } else{
-        console.log("error")
-    }
-  });
+    client.get('statuses/user_timeline.json?screen_name=tuckerwking&count=20', function(error, tweets, response) {
+        if(error) throw error;
+        for (let i = 0; i < tweets.length; i++) {
+            console.log(tweets[i].text);  // The favorites. 
+            console.log(tweets[i].created_at);  // The favorites. 
+            
+        }
+        
+        // console.log(response);  // Raw response object. 
+      });
 }
 
 function spotifySearch() {
@@ -163,4 +155,27 @@ function movieSearch() {
         );
       }
     });
+}
+
+function doWhatItSays(){
+    fs.readFile("./random.txt", 'utf8', (err, data) => {
+        if (err) throw err;
+        spotifySearch = data;
+        spotify
+          .request(
+            "https://api.spotify.com/v1/search?q=" +
+              spotifySearch +
+              "&type=track&limit=1"
+          )
+          .then(function(data) {
+            console.log(data.tracks.items[0].artists[0].name);
+            console.log(data.tracks.items[0].name);
+            console.log(data.tracks.items[0].external_urls.spotify);
+            console.log(data.tracks.items[0].album.name);
+          })
+          .catch(function(err) {
+            console.error("Error occurred: " + err);
+          });
+
+    })
 }
