@@ -17,7 +17,9 @@
   },
   "homepage": "https://github.com/TuckerK/liri-node-app#readme",
   "dependencies": {
+    "fs": "0.0.1-security",
     "inquirer": "^5.0.1",
+    "node-spotify-api": "^1.0.7",
     "twitter": "^1.7.1"
   }
 }
